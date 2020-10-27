@@ -1,2 +1,1 @@
-# java-executors
-Java Executors
+# Java Executors
