@@ -66,3 +66,25 @@
                 }
             }
         }
+        
+### Asynchronous (Non-blocking) - CompletableFuture
+
+    public class Main {
+        public static void main(String[] args) {
+            Supplier<Integer> task = () -> 1;
+            var future = CompletableFuture.supplyAsync(task);
+
+            try {
+                var result = future.get();
+                System.out.println(result);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
+
+
