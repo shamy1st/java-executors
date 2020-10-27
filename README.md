@@ -85,6 +85,39 @@
         }
     }
     
-    
+### Asynchronous API
 
+    public class Main {
+        public static void main(String[] args) {
+            MailService service = new MailService();
+            //service.send();       //block main thread
+            service.sendAsync();    //don't block
+
+            System.out.println("do some code ...");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("main thread finished!");
+        }
+    }
+
+    public class MailService {
+        public void send() {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Mail sent.");
+        }
+
+        public CompletableFuture<Void> sendAsync() {
+            return CompletableFuture.runAsync(() -> send());
+        }
+    }
+
+### Runn Code on Completion
 
