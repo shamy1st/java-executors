@@ -234,4 +234,31 @@ start two tasks asynchronously and then combine the results.
         }
     }
 
+### Waiting Many Tasks to Complete
+
+    public class Main {
+        public static void main(String[] args) {
+            var task1 = CompletableFuture.supplyAsync(() -> 1);
+            var task2 = CompletableFuture.supplyAsync(() -> 2);
+            var task3 = CompletableFuture.supplyAsync(() -> 3);
+
+            var allTasks = CompletableFuture.allOf(task1, task2, task3);
+            allTasks.thenRun(() -> {
+                try {
+                    var result1 = task1.get();
+                    var result2 = task2.get();
+                    var result3 = task3.get();
+
+                    System.out.println("sum: " + (result1+result2+result3));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("All tasks done!");
+            });
+        }
+    }
+
 ###
