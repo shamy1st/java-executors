@@ -221,4 +221,17 @@ start a task on completion of another task.
         }
     }
 
+### Combine CompletableFuture
+start two tasks asynchronously and then combine the results.
+
+    public class Main {
+        public static void main(String[] args) {
+            var productPrice = CompletableFuture.supplyAsync(() -> 20);
+            var usdToEur = CompletableFuture.supplyAsync(() -> 0.9);
+
+            productPrice.thenCombine(usdToEur, (price, exchangeRate) -> price * exchangeRate)
+                    .thenAccept(result -> System.out.println(result));
+        }
+    }
+
 ###
