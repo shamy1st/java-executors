@@ -261,4 +261,27 @@ start two tasks asynchronously and then combine the results.
         }
     }
 
+### Wait Fastest Task
+if you have multiple task and you want the result from the fastest task
+
+    public class Main {
+        public static void main(String[] args) {
+            var task1 = CompletableFuture.supplyAsync(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return 100;
+            });
+
+            var task2 = CompletableFuture.supplyAsync(() -> 200);
+
+            CompletableFuture.anyOf(task1, task2)
+                    .thenAccept(result -> System.out.println(result));
+        }
+    }
+    
 ###
+
+
