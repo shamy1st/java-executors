@@ -116,10 +116,53 @@
         }
 
         public CompletableFuture<Void> sendAsync() {
+            //runAsync() - no return value, run in separate thread
             return CompletableFuture.runAsync(() -> send());
         }
     }
 
 ### Run Code on Completion
 
+    public class Main {
+        public static void main(String[] args) {
+            CompletableFuture future = CompletableFuture.supplyAsync(() -> 1);
+            //thenRun(),thenRunAsync() are  provided by CompletionStage
+
+            //run in the current thread "main"
+            future.thenRun(() -> {
+                //print: main
+                System.out.println(Thread.currentThread().getName());
+                System.out.println("Task");
+            });
+
+            //run in a separate thread
+            future.thenRunAsync(() -> {
+                //print: ForkJoinPool.commonPool-worker-3
+                System.out.println(Thread.currentThread().getName());
+                System.out.println("Task Asynchronous");
+            });
+
+            //run after the task is completed, in the current thread "main"
+            future.thenAccept(result -> {
+                //print: main
+                System.out.println(Thread.currentThread().getName());
+                System.out.println(result);
+            });
+
+            //run after the task is completed, in a separate thread
+            future.thenAcceptAsync(result -> {
+                //print: ForkJoinPool.commonPool-worker-3
+                System.out.println(Thread.currentThread().getName());
+                System.out.println(result);
+            });
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+###     
 
