@@ -3,7 +3,7 @@
 [ExecutorService](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html) is a java interface representing the thread pool.
   * **Impl**: AbstractExecutorService, ForkJoinPool, ScheduledThreadPoolExecutor, ThreadPoolExecutor
 
-**Create Thread Pool:**
+### Create Thread Pool
 
     public class Main {
         public static void main(String[] args) {
@@ -26,3 +26,43 @@
             }
         }
     }
+    
+### Callable, Future
+* **Callable**: like a Runnable interface but return a value.
+* **Future**: object will be ready in the future.
+
+        public class Main {
+            public static void main(String[] args) {
+                ExecutorService executor = Executors.newFixedThreadPool(2);
+
+                try {
+                    Future future = executor.submit(() -> {
+                        LongTask.simulate();
+                        return 1;
+                    });
+
+                    System.out.println("some code ...");
+
+                    try {
+                        var result = future.get();
+                        System.out.println(result);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                } finally {
+                    executor.shutdown();
+                }
+            }
+        }
+
+        public class LongTask {
+            public static void simulate() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
