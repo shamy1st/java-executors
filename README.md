@@ -164,5 +164,28 @@
         }
     }
     
+### Task Handling Exceptions
+
+    public class Main {
+        public static void main(String[] args) {
+            CompletableFuture future = CompletableFuture.supplyAsync(() -> {
+                System.out.println("doing some task ...");
+                throw new IllegalStateException();
+            });
+
+            try {
+                //future.get(); // throw exception
+                //to prevent crashing, use .exceptionally()
+                var result = future.exceptionally(exception -> 9).get();
+                System.out.println(result);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
 ###     
+
 
