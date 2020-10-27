@@ -282,6 +282,30 @@ if you have multiple task and you want the result from the fastest task
         }
     }
     
+### Handle Timeout
+
+    public class Main {
+        public static void main(String[] args) {
+            var task = CompletableFuture.supplyAsync(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return 1;
+            });
+
+            try {
+                //throw exception java.util.concurrent.TimeoutException
+                //var result = task.orTimeout(500, TimeUnit.MILLISECONDS).get();
+                var result = task.completeOnTimeout(-1, 500, TimeUnit.MILLISECONDS).get();
+                System.out.println(result);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 ###
-
-
