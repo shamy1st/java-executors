@@ -307,5 +307,3 @@ if you have multiple task and you want the result from the fastest task
             }
         }
     }
-
-###
