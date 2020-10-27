@@ -187,6 +187,7 @@
     }
     
 ### Transform CompletableFuture
+transform result to another form.
 
     public class Main {
         public static int toFahrenheit(int celsius) {
@@ -199,3 +200,25 @@
                     .thenAccept(fahrenheit -> System.out.println(fahrenheit));
         }
     }
+
+### Compose CompletableFuture
+start a task on completion of another task.
+
+    public class Main {
+        public static CompletableFuture<String> getEmail() {
+            return CompletableFuture.supplyAsync(() -> "ahmed@example.com");
+        }
+
+        public static CompletableFuture<String> getPlaylist(String email) {
+            return CompletableFuture.supplyAsync(() -> "music01,music02,music03");
+        }
+
+        public static void main(String[] args) {
+            //using id get email, using email get music-playlist
+            getEmail()
+                .thenCompose(Main::getPlaylist)
+                .thenAccept(playlist -> System.out.println(playlist));
+        }
+    }
+
+###
